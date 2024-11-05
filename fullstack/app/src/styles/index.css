@@ -1,0 +1,92 @@
+@import url("https://fonts.googleapis.com/css2?family=Inter:wght@400;700&display=swap");
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+
+@layer components {
+  /* library */
+
+  .form {
+    @apply flex flex-col max-w-[240px] gap-[5px];
+  }
+
+  .label {
+    @apply font-bold;
+  }
+
+  .input {
+    @apply border-[2px] border-solid border-black p-[5px];
+  }
+
+  .button {
+    @apply border-[2px] border-solid border-black p-[5px] bg-[transparent] font-bold;
+  }
+
+  .link {
+    @apply decoration-[none] text-black visited:text-black before:content-['[_'] after:content-['_]'];
+  }
+
+  .container {
+    @apply flex flex-col items-center gap-[1rem] p-[1rem];
+  }
+
+  .container--horizontal {
+    @apply bg-purple-400 flex-row justify-center;
+  }
+
+  /* custom */
+
+  .header {
+    @apply bg-yellow-300 flex items-center justify-between p-[.5rem];
+  }
+
+  .new-post {
+    @apply bg-yellow-300 mb-[1rem];
+  }
+
+  .post {
+    @apply flex flex-col items-center pb-[2rem];
+  }
+
+  .post-image {
+    @apply max-w-[220px];
+  }
+
+  .post-actions {
+    @apply flex justify-between gap-[.5rem] mt-[.5rem];
+  }
+
+  .posts {
+    @apply bg-purple-400 mb-[3rem] md:grid md:grid-cols-2 lg:grid-cols-3;
+  }
+
+  .footer {
+    @apply bg-yellow-300 flex flex-col justify-center items-center fixed bottom-0 w-full min-h-[3rem];
+  }
+
+  .Feedback {
+    @apply fixed top-0 w-full box-border;
+  }
+
+  .Feedback--debug {
+    @apply bg-[yellowgreen];
+  }
+
+  .Feedback--info {
+    @apply bg-[dodgerblue];
+  }
+
+  .Feedback--warn {
+    @apply bg-[gold];
+  }
+
+  .Feedback--error {
+    @apply bg-[orange];
+  }
+
+  .Feedback--fatal {
+    @apply bg-[red] text-white;
+  }
+}
