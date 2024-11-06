@@ -8,8 +8,13 @@
 @layer components {
   /* library */
 
+
   body {
     @apply bg-gray-800 flex-row justify-center text-white ;
+  }
+
+  .h1-register {
+    @apply mt-10
   }
 
   .form {
@@ -48,11 +53,21 @@
     @apply bg-gray-800 flex-row justify-center;
   }
 
+  .scrollable-container {
+  @apply max-h-80 overflow-y-auto p-2 border border-gray-300 mt-5 /* Opcional: agregar un borde para el contenedor */
+}
+
   .paragraph-login {
     @apply text-xs text-white mt-5
   }
 
+
+
   /* custom */
+
+  .logo-register {
+    @apply w-1/2 mt-5
+  }
 
   .header {
     @apply bg-gray-500 flex items-center justify-between p-[.5rem];

@@ -45,32 +45,29 @@ function Login(props) {
 
             <Button type="submit">Login</Button>
 
-            <p class='paragraph-login'>Ser social significa interactuar, relacionarse y formar conexiones con otras personas, adaptándose y participando
-                en el entorno social.
-                <br />
-                <br />
-                Es una parte esencial de la vida humana, ya que desde siempre hemos dependido de la comunidad y la cooperación
-                para sobrevivir y prosperar.
-                <br />
-                <br />
-                Ser social también implica ciertas habilidades y comportamientos, como:
-                <br />
-                Comunicación: Poder expresar y entender ideas, emociones y necesidades.
-                <br />
-                Empatía: Ser capaz de ponerse en el lugar de otros, entender sus sentimientos y puntos de vista.
-                <br />
-                <br />
-                Adaptabilidad: Ajustarse a diferentes entornos, personas y situaciones sociales.
-                <br />
-                <br />
-                Colaboración: Trabajar junto a otros hacia objetivos comunes.
-                <br />
-                <br />
-                Resolución de conflictos: Saber gestionar y resolver desacuerdos de manera constructiva.
-                <br />
-                <br />
-                Las personas sociales disfrutan y buscan estas interacciones y suelen encontrar energía y satisfacción en las relaciones con otros.
-            </p>
+            <div class="scrollable-container">
+                <p class="paragraph-login">
+
+                    En TheOnlyGoodSystem Social SocialNetwork, creemos que ser social va más allá de compartir momentos; significa interactuar de manera auténtica, construir relaciones genuinas y formar conexiones significativas con los demás. Nuestra plataforma está diseñada para fomentar un entorno social en el que cada persona pueda adaptarse, participar y sentirse parte de una comunidad.
+                    <br /><br />
+                    Ser social es una parte esencial de la vida humana. Desde los inicios, hemos dependido de la comunidad y la cooperación para sobrevivir y prosperar. En Social SocialNetwork, rescatamos ese espíritu de colaboración y apoyo mutuo, brindándote un espacio donde cada interacción tiene el potencial de enriquecer y fortalecer tus lazos personales.
+                    <br /><br />
+                    Nuestra red promueve habilidades y comportamientos clave para una convivencia positiva:
+                    <br /><br />
+                    <strong>Comunicación:</strong> Queremos que puedas expresar y entender ideas, emociones y necesidades de manera clara y sincera.
+                    <br />
+                    <strong>Empatía:</strong> Facilitamos espacios donde puedas ponerte en el lugar de otros, comprender sus puntos de vista y sentir con ellos.
+                    <br />
+                    <strong>Adaptabilidad:</strong> La vida es dinámica y en Social SocialNetwork podrás ajustarte a distintos entornos y situaciones sociales, relacionándote con personas diversas.
+                    <br />
+                    <strong>Colaboración:</strong> Aquí podrás trabajar junto a otros hacia metas comunes, impulsando proyectos, ideas y momentos compartidos.
+                    <br />
+                    <strong>Resolución de conflictos:</strong> Aprender a gestionar y resolver desacuerdos de manera constructiva es parte fundamental de nuestra filosofía, ya que creemos en el poder de las relaciones saludables.
+                    <br /><br />
+                    En Social SocialNetwork, valoramos a las personas que encuentran energía y satisfacción en las conexiones auténticas. Únete a una red social donde lo verdaderamente importante son las relaciones que construimos y el impacto positivo que podemos tener unos en otros. ¡Conéctate, interactúa y sé parte de algo más grande!
+                </p>
+
+            </div>
         </Form>
 
         <Link onClick={handleRegisterClick}>Register</Link>

@@ -84,7 +84,7 @@ function Home(props) {
         <header className="header">
             <h1>
                 <a onClick={handleHomeClick}>
-                    <img src={logo} alt="Home" style={{ width: '150px', height: '50px' }} />
+                    <img src={logo} alt="Home" style={{ width: '150px', height: '60px' }} />
                 </a>
             </h1>
 
