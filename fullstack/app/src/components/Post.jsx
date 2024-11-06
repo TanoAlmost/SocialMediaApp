@@ -1,7 +1,7 @@
 import { useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 
-import { Button, Form, Field, Link } from '../library'
+import { LikesButton, Button, Form, Field, Link } from '../library'
 import { useContext } from '../hooks'
 
 import logic from '../logic'
@@ -92,7 +92,7 @@ function Post(props) {
         </Form>}
 
         <div className="post-actions">
-            <Button onClick={handleToggleLikeClick}>{props.post.liked ? '❤️' : '🤍'} {props.post.likes.length} likes</Button>
+            <LikesButton onClick={handleToggleLikeClick}>{props.post.liked ? '❤️' : '🤍'} {props.post.likes.length} likes</LikesButton>
             <Button onClick={handleToggleFavClick}>{props.post.fav ? '⭐️' : '✩'}</Button>
 
             {logic.sessionUserId === props.post.author.id && view === null && <Button onClick={handleEditClick}>✏️</Button>}

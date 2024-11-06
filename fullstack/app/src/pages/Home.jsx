@@ -5,6 +5,7 @@ import logic from '../logic'
 
 import { Button, Link } from '../library'
 import { Posts, Profile, NewPost, UserPosts } from '../components'
+import logo from '../assets/logo-w.png'
 
 import { useContext } from '../hooks'
 
@@ -81,7 +82,11 @@ function Home(props) {
 
     return <div>
         <header className="header">
-            <h1><Link onClick={handleHomeClick}>Home</Link></h1>
+            <h1>
+                <a onClick={handleHomeClick}>
+                    <img src={logo} alt="Home" style={{ width: '150px', height: '50px' }} />
+                </a>
+            </h1>
 
             <div>
                 <Link onClick={handleProfileClick}>{name}</Link> <Link onClick={handleFavPostsClick}>Favs</Link> <Button onClick={handleLogoutClick}>Logout</Button>
