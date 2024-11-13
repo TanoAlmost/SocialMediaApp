@@ -1,5 +1,5 @@
-import context from './context'
+import session from './session'
 
 export default function isUserLoggedIn() {
-    return !!context.token
+    return !!session.token
 }

@@ -1,7 +1,7 @@
 import { Button, Link, Form, Field, Container } from '../library'
 import logic from '../logic'
 
-import logo from "../assets/logo-w-wh.png"
+import logo from "../assets/logo-w-wh-s.png"
 
 import { useContext } from '../hooks'
 
@@ -37,7 +37,7 @@ function Register(props) {
         props.onLoginClick()
     }
 
-    return <Container>
+    return <Container className="container-background">
         <h1 className='h1-register'>Register</h1>
 
         <Form onSubmit={handleSubmit}>
@@ -50,15 +50,20 @@ function Register(props) {
 
         <Link onClick={handleLoginClick}>Login</Link>
 
-        <div class="scrollable-container">
-            <p>
-                En Social SocialNetwork, creemos en la importancia de crear un espacio para conversaciones significativas y comprometidas. Los temas principales que abordaremos incluyen aspectos artísticos, políticos y de derechos humanos, todos ellos desde una perspectiva socialista moderna, orientada a la humanidad y al futuro de las nuevas generaciones.
-                <br /><br />
-                Queremos que nuestra plataforma sea un lugar donde se discutan temas importantes y relevantes para el mundo actual, como el cambio climático, la justicia social y los derechos fundamentales de las personas. En Social SocialNetwork, fomentamos el intercambio de ideas que buscan construir un futuro más justo, equitativo y sostenible.
-                <br /><br />
-                Este es un espacio para quienes buscan inspirar y ser inspirados, para quienes desean expresar sus preocupaciones y soluciones frente a los retos de nuestra era, y para aquellos que creen en el poder de la comunidad para transformar el mundo. Únete a Social SocialNetwork y forma parte de una red social comprometida con el progreso social y el bienestar colectivo.
-            </p>
 
+        <div className="scrollable-container">
+            <p className="paragraph-register">
+
+                <strong>POR FAVOR, LEEME ANTES DE REGISTRARTE!</strong>
+                <br /><br />
+                En Social SocialNetwork, creemos en la importancia de crear un espacio seguro para conversaciones significativas y comprometidas. Los temas principales que abordaremos incluyen aspectos artísticos, políticos y de derechos humanos, todos ellos desde una perspectiva en contra del fascismo y el extremismo, es decir orientada a la humanidad y al futuro de las nuevas generaciones.
+                <br /><br />
+                Queremos que nuestra plataforma sea un lugar donde se discutan temas importantes y relevantes para el mundo actual, como el cambio climático, la justicia social y los derechos fundamentales de las personas. En TheOnlyGoodSystem Social SocialNetwork, fomentamos el intercambio de ideas que buscan construir un futuro más justo, equitativo y sostenible.
+                <br /><br />
+                Este es un espacio para quienes buscan inspirar y ser inspirados, para quienes desean expresar sus preocupaciones y soluciones frente a los retos de nuestra era, y para aquellos que creen en el poder de la comunidad para transformar el mundo.
+                <br /><br />
+                Únete a TheOnlyGoodSystem Social SocialNetwork y forma parte de una red social comprometida con el progreso social y el bienestar colectivo.
+            </p>
 
         </div>
 

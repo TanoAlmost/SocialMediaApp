@@ -1,14 +1,14 @@
 import { validate, errors } from 'com'
 const { SystemError } = errors
 
-import context from './context'
+import session from './session'
 
 export default function retrieveUser() {
     return (async () => {
         const req = {
             method: 'GET',
             headers: {
-                Authorization: `Bearer ${context.token}`
+                Authorization: `Bearer ${session.token}`
             }
         }
 

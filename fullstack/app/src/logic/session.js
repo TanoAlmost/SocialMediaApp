@@ -1,4 +1,4 @@
-const context = {
+const session = {
     set sessionUserId(userId) {
         if (userId)
             sessionStorage.userId = userId
@@ -22,4 +22,4 @@ const context = {
     }
 }
 
-export default context
+export default session

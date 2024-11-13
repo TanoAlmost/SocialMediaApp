@@ -1,7 +1,7 @@
 import { validate, errors } from 'com'
 const { SystemError } = errors
 
-import context from './context'
+import session from './session'
 
 export default function loginUser(email, password) {
     validate.email(email)
@@ -44,8 +44,8 @@ export default function loginUser(email, password) {
             const payload = JSON.parse(payloadJson)
             const userId = payload.sub
 
-            context.sessionUserId = userId
-            context.token = token
+            session.sessionUserId = userId
+            session.token = token
         } catch (error) {
             throw new SystemError(error.message)
         }

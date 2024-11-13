@@ -14,7 +14,7 @@
   }
 
   .h1-register {
-    @apply mt-10
+    @apply mt-6
   }
 
   .form {
@@ -54,19 +54,30 @@
   }
 
   .scrollable-container {
-  @apply max-h-80 overflow-y-auto p-2 border border-gray-300 mt-5 /* Opcional: agregar un borde para el contenedor */
+  @apply max-h-80 overflow-y-auto p-2 border border-gray-300 mt-5 flex flex-col max-w-[240px] gap-[5px]/* Opcional: agregar un borde para el contenedor */
 }
 
   .paragraph-login {
-    @apply text-xs text-white mt-5
+    @apply text-xs text-white mt-2
   }
+
+  .paragraph-register {
+    @apply text-xs text-white mt-2
+  }
+
 
 
 
   /* custom */
 
+
   .logo-register {
-    @apply w-1/2 mt-5
+    @apply w-[250px] h-[90px] mt-3
+  }
+
+
+  .logo-login {
+    @apply w-[250px] h-[90px] mt-5
   }
 
   .header {

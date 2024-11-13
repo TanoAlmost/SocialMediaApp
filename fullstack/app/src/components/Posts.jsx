@@ -14,12 +14,11 @@ function Posts(props) {
             props.loadPosts((error, posts) => {
                 if (error) {
                     context.handleError(error)
-
                     return
                 }
 
+                console.log('Posts recibidos:', posts) // Verifica los datos recibidos
                 posts.reverse()
-
                 setPosts(posts)
             })
         } catch (error) {
@@ -34,7 +33,17 @@ function Posts(props) {
     }, [props.stamp])
 
     return <div className="posts">
-        {posts.map(post => <Post key={post.id} post={post} onToggleLikeClick={refreshPosts} onToggleFavClick={refreshPosts} onPostTextUpdate={refreshPosts} onError={props.onError} />)}
+        {posts.map(post =>
+
+            <Post
+                key={post.id}
+                post={post}
+                onToggleLikeClick={refreshPosts}
+                onToggleFavClick={refreshPosts}
+                onPostTextUpdate={refreshPosts}
+                onDeletePost={refreshPosts} // Nueva prop para eliminar 
+                onError={props.onError} />)}
+
     </div>
 }
 

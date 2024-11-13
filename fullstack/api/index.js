@@ -9,18 +9,24 @@ import {
     registerUserHandler,
     authenticateUserHandler,
     retrieveUserHandler,
+    changeUserEmailHandler,
+
     retrievePostsHandler,
     createPostHandler,
+
     toggleLikePostHandler,
     toggleFavPostHandler,
-    retrieveFavPostsHandler
+    retrieveFavPostsHandler,
+
+    deletePostHandler,
+    updatePostTextHandler
 } from './handlers/index.js'
 
 mongoose.connect(process.env.MONGODB_URL)
     .then(() => {
         const server = express()
 
-        server.get('/', (req, res) => res.send('Hello, World!'))
+        server.get('/', (req, res) => res.send('Hello, my api!'))
 
         const jsonBodyParser = express.json()
 
@@ -32,6 +38,8 @@ mongoose.connect(process.env.MONGODB_URL)
 
         server.get('/users', retrieveUserHandler)
 
+        server.patch('/users/email', jsonBodyParser, changeUserEmailHandler)
+
         server.get('/posts', retrievePostsHandler)
 
         server.post('/posts', jsonBodyParser, createPostHandler)
@@ -41,6 +49,11 @@ mongoose.connect(process.env.MONGODB_URL)
         server.patch('/posts/:postId/favs', toggleFavPostHandler)
 
         server.get('/posts/favs', retrieveFavPostsHandler)
+
+        server.patch('/posts/:postId/text', jsonBodyParser, updatePostTextHandler)
+
+        // Agrega la ruta DELETE para eliminar un post
+        server.delete('/posts/:postId', deletePostHandler)
 
         server.listen(process.env.PORT, () => console.log(`server running on port ${process.env.PORT}`))
     })

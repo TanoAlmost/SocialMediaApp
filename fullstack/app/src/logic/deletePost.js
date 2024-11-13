@@ -1,21 +1,20 @@
 import { validate, errors } from 'com'
 import session from './session'
 
-
-function publishPost(image, text, callback) {
-    validate.text(image, 'image')
-    validate.text(text, 'text')
+function deletePost(postId, callback) {
+    // Validación del postId
+    validate.text(postId, 'postId')
 
     const req = {
-        method: 'POST',
+        method: 'DELETE',
         headers: {
             Authorization: `Bearer ${session.token}`,
             'Content-Type': 'application/json'
-        },
-        body: JSON.stringify({ image, text })
+        }
     }
 
-    fetch(`${import.meta.env.VITE_API_URL}/posts`, req)
+    // Realiza la solicitud de eliminación
+    fetch(`${import.meta.env.VITE_API_URL}/posts/${postId}`, req)
         .then(res => {
             if (!res.ok) {
                 res.json()
@@ -25,9 +24,9 @@ function publishPost(image, text, callback) {
                 return
             }
 
-            callback(null)
+            callback(null) // Llama al callback sin error si se elimina correctamente
         })
-        .catch(error => callback(error))
+        .catch(error => callback(error)) // Maneja errores de la solicitud
 }
 
-export default publishPost
+export default deletePost

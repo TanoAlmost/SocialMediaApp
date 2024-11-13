@@ -1,5 +1,5 @@
 import { validate, errors } from 'com'
-import context from './context'
+import session from './session'
 
 const { ContentError, DuplicityError, NotFoundError, TokenError } = errors
 
@@ -9,7 +9,7 @@ function retrievePosts(callback) {
     const req = {
         method: 'GET',
         headers: {
-            Authorization: `Bearer ${context.token}`
+            Authorization: `Bearer ${session.token}`
         }
     }
 

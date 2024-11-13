@@ -1,6 +1,6 @@
 import { validate, errors } from 'com'
 const { SystemError } = errors
-import context from './context'
+import session from './session'
 
 function changeUserEmail(newEmail, newEmailConfirm, password) {
     validate.email(newEmail, 'new email')
@@ -11,7 +11,7 @@ function changeUserEmail(newEmail, newEmailConfirm, password) {
         method: 'PATCH',
         headers: {
             'Content-Type': 'application/json',
-            Authorization: `Bearer ${context.token}`
+            Authorization: `Bearer ${session.token}`
         },
         body: JSON.stringify({ newEmail, newEmailConfirm, password })
     }

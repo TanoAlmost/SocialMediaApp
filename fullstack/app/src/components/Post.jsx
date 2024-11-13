@@ -4,6 +4,8 @@ import { useNavigate } from 'react-router-dom'
 import { LikesButton, Button, Form, Field, Link } from '../library'
 import { useContext } from '../hooks'
 
+import session from '../logic/session'
+
 import logic from '../logic'
 
 
@@ -12,8 +14,16 @@ function Post(props) {
 
     const [view, setView] = useState(null)
 
+    // Usamos sessionUserId desde context
+    const sessionUserId = session.sessionUserId;
+
     const context = useContext()
     const navigate = useNavigate()
+
+    console.log("Session User ID:", session.sessionUserId);
+    console.log("Post Author ID:", props.post.author.id);
+    console.log("Condition met:", String(session.sessionUserId) === String(props.post.author.id));
+
 
     const handleToggleLikeClick = () => {
         try {
@@ -53,17 +63,16 @@ function Post(props) {
 
     const handleEditSubmit = event => {
         event.preventDefault()
-
         const text = event.target.text.value
 
         try {
-            logic.updatePostText(post.id, text, error => {
+            logic.updatePostText(props.post.id, text, error => {
                 if (error) {
                     context.handleError(error)
-
                     return
                 }
 
+                console.log('Post editado con éxito, actualizando lista de posts') // Confirmación de actualización
                 props.onPostTextUpdate()
                 setView(null)
             })
@@ -76,6 +85,21 @@ function Post(props) {
         event.preventDefault()
 
         navigate(`/users/${props.post.author.id}`)
+    }
+
+    const handleDeleteClick = () => {
+        try {
+            logic.deletePost(props.post.id, error => {
+                if (error) {
+                    context.handleError(error) // Maneja cualquier error a través del contexto
+                    return
+                }
+
+                props.onDeletePost() // Notifica al componente padre que el post fue eliminado
+            })
+        } catch (error) {
+            context.handleError(error) // Captura cualquier error inesperado
+        }
     }
 
     return <article className="post">
@@ -95,7 +119,13 @@ function Post(props) {
             <LikesButton onClick={handleToggleLikeClick}>{props.post.liked ? '❤️' : '🤍'} {props.post.likes.length} likes</LikesButton>
             <Button onClick={handleToggleFavClick}>{props.post.fav ? '⭐️' : '✩'}</Button>
 
-            {logic.sessionUserId === props.post.author.id && view === null && <Button onClick={handleEditClick}>✏️</Button>}
+            {sessionUserId === props.post.author.id && view === null && <Button onClick={handleEditClick}>✏️</Button>}
+
+            {sessionUserId === props.post.author.id && (
+                <Button onClick={handleDeleteClick}>🗑️ Delete</Button>
+            )}
+
+
         </div>
     </article>
 }
