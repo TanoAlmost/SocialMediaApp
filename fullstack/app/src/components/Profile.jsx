@@ -126,7 +126,15 @@ export default function Profile(props) {
                 />
 
                 <Button type="submit">Update password</Button>
+
+
+
             </form>
+
+            <Button className="text-lg text-white bg-transparent border border-white rounded-full px-6 py-2 hover:bg-white hover:text-[#5F5784] transition duration-300 ease-in-out mt-4" >
+                Delete Account
+            </Button>
+
         </div>
     )
 }

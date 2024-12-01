@@ -2,7 +2,7 @@ import registerUserHandler from './registerUserHandler.js'
 import authenticateUserHandler from './authenticateUserHandler.js'
 import retrieveUserHandler from './retrieveUserHandler.js'
 import changeUserEmailHandler from './changeUserEmailHandler.js'
-// import changeUserPasswordHandler from './changeUserPasswordHandler.js'
+import changeUserPasswordHandler from './changeUserPasswordHandler.js'
 import retrievePostsHandler from './retrievePostsHandler.js'
 import createPostHandler from './createPostHandler.js'
 import toggleLikePostHandler from './toggleLikePostHandler.js'
@@ -17,7 +17,7 @@ export {
     authenticateUserHandler,
     retrieveUserHandler,
     changeUserEmailHandler,
-    // changeUserPasswordHandler,
+    changeUserPasswordHandler,
 
     retrievePostsHandler,
     createPostHandler,

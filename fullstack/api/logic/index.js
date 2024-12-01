@@ -2,7 +2,7 @@ import registerUser from './registerUser.js'
 import authenticateUser from './authenticateUser.js'
 import retrieveUser from './retrieveUser.js'
 import changeUserEmail from './changeUserEmail.js'
-// import changeUserPassword from './changeUserPassword.js'
+import changeUserPassword from './changeUserPassword.js'
 
 import createPost from './createPost.js'
 import retrieveFavPosts from './retrieveFavPosts.js'
@@ -17,7 +17,7 @@ const logic = {
     authenticateUser,
     retrieveUser,
     changeUserEmail,
-    //changeUserPassword,
+    changeUserPassword,
     createPost,
     retrieveFavPosts,
     retrievePosts,

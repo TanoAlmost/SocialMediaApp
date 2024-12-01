@@ -10,6 +10,7 @@ import {
     authenticateUserHandler,
     retrieveUserHandler,
     changeUserEmailHandler,
+    changeUserPasswordHandler,
 
     retrievePostsHandler,
     createPostHandler,
@@ -39,6 +40,8 @@ mongoose.connect(process.env.MONGODB_URL)
         server.get('/users', retrieveUserHandler)
 
         server.patch('/users/email', jsonBodyParser, changeUserEmailHandler)
+
+        server.patch('/users/password', jsonBodyParser, changeUserPasswordHandler)
 
         server.get('/posts', retrievePostsHandler)
 
