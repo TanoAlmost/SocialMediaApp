@@ -1,14 +1,21 @@
-import { validate } from 'com'
-
-import session from "./session"
+import { validate } from 'com';
+import session from './session';
 
 function logoutUser(callback) {
-    validate.function(callback, 'callback')
+    try {
+        // Validar que el callback sea una función
+        validate.function(callback, 'callback');
 
-    session.token = null
-    session.sessionUserId = null
+        // Limpiar los datos de la sesión
+        session.token = null;
+        session.sessionUserId = null;
 
-    callback(null)
+        // Llamar al callback sin errores
+        callback(null);
+    } catch (error) {
+        // Llamar al callback con un error si ocurre
+        callback(error);
+    }
 }
 
-export default logoutUser
+export default logoutUser;

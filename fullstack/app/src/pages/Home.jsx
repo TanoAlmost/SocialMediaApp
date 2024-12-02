@@ -1,111 +1,107 @@
-import { useState, useEffect } from 'react'
-import { Routes, Route, useNavigate, useLocation } from 'react-router-dom'
+import { useState, useEffect } from 'react';
+import { Routes, Route, useNavigate, useLocation } from 'react-router-dom';
 
-import logic from '../logic'
+import logic from '../logic';
 
-import { Button, Link } from '../library'
-import { Posts, Profile, NewPost, UserPosts } from '../components'
-import logo from '../assets/logo-w.png'
+import { Button, Link } from '../library';
+import { Posts, Profile, NewPost, UserPosts, Settings } from '../components'; // Importar Settings
+import logo from '../assets/logo-w.png';
 
-import { useContext } from '../hooks'
+import session from '../logic/session';
 
+import { useContext } from '../hooks';
 
 function Home(props) {
-    console.log('Home')
+    console.log('Home');
 
-    const context = useContext()
+    const context = useContext();
 
-    const [view, setView] = useState(null)
-    const [name, setName] = useState(null)
-    const [stamp, setStamp] = useState(null)
+    const [view, setView] = useState(null);
+    const [name, setName] = useState(null);
+    const [stamp, setStamp] = useState(null);
 
-    const navigate = useNavigate()
-    const location = useLocation()
-
-    function handleLogoutClick() {
-        logic.logoutUser(error => {
-            if (error) {
-                context.handleError(error)
-
-                return
-            }
-        })
-
-        props.onLogoutClick()
-    }
+    const navigate = useNavigate();
+    const location = useLocation();
 
     useEffect(() => {
-        console.log('Home -> effect (name)')
+        console.log('Home -> effect (name)');
 
         try {
             logic.retrieveUser()
                 .then(user => setName(user.name))
-                .catch(error => context.handleError(error))
+                .catch(error => context.handleError(error));
         } catch (error) {
-            context.handleError(error)
+            context.handleError(error);
         }
-    }, [])
+    }, []);
 
     function handleProfileClick(event) {
-        event.preventDefault()
+        event.preventDefault();
+        navigate(`/users/${session.sessionUserId}`); // Redirigir a UserPosts
+    }
 
-        navigate('/profile')
+    function handleSettingsClick(event) {
+        event.preventDefault();
+        navigate('/settings'); // Redirigir a Settings
     }
 
     function handleHomeClick(event) {
-        event.preventDefault()
-
-        navigate('/')
-    }
-
-    function handleNewPostClick() {
-        setView('new-post')
-    }
-
-    function handleNewPostCancel() {
-        setView(null)
-    }
-
-    function handleNewPostPublish() {
-        setStamp(Date.now())
-        setView(null)
-        navigate('/')
-
-        window.scrollTo(0, 0)
+        event.preventDefault();
+        navigate('/');
     }
 
     function handleFavPostsClick(event) {
-        event.preventDefault()
-
-        navigate('/favs')
+        event.preventDefault();
+        navigate('/favs');
     }
 
-    return <div>
-        <header className="header">
-            <h1>
-                <a onClick={handleHomeClick}>
-                    <img src={logo} alt="Home" style={{ width: '150px', height: '60px' }} />
-                </a>
-            </h1>
+    function handleNewPostClick() {
+        setView('new-post');
+    }
 
-            <div>
-                <Link onClick={handleProfileClick}>{name}</Link> <Link onClick={handleFavPostsClick}>Favs</Link> <Button onClick={handleLogoutClick}>Logout</Button>
-            </div>
-        </header>
+    function handleNewPostCancel() {
+        setView(null);
+    }
 
-        <Routes>
-            <Route path="/profile" element={<Profile />} />
-            <Route path="/favs" element={<Posts loadPosts={logic.retrieveFavPosts} />} />
-            <Route path="/users/:userId" element={<UserPosts />} />
-            <Route path="/" element={<Posts loadPosts={logic.retrievePosts} stamp={stamp} />} />
-        </Routes>
+    function handleNewPostPublish() {
+        setStamp(Date.now());
+        setView(null);
+        navigate('/');
+        window.scrollTo(0, 0);
+    }
 
-        <footer className="footer">
-            {view === 'new-post' && <NewPost onPublish={handleNewPostPublish} onCancel={handleNewPostCancel} />}
+    return (
+        <div>
+            <header className="header">
+                <h1>
+                    <a onClick={handleHomeClick}>
+                        <img src={logo} alt="Home" style={{ width: '150px', height: '60px' }} />
+                    </a>
+                </h1>
 
-            {view !== 'new-post' && location.pathname !== '/profile' && location.pathname !== '/favs' && <Button onClick={handleNewPostClick}>+</Button>}
-        </footer>
-    </div>
+                <div>
+                    <Link onClick={handleProfileClick}>{name}</Link>
+                    <Link onClick={handleFavPostsClick}>Favs</Link>
+                    <Link onClick={handleSettingsClick}>Settings</Link>
+                </div>
+            </header>
+
+            <Routes>
+                <Route path="/settings" element={<Settings onLogoutClick={props.onLogoutClick} />} /> {/* Pasar onLogoutClick */}
+                <Route path="/favs" element={<Posts loadPosts={logic.retrieveFavPosts} />} />
+                <Route path="/users/:userId" element={<UserPosts />} />
+                <Route path="/" element={<Posts loadPosts={logic.retrievePosts} stamp={stamp} />} />
+            </Routes>
+
+            <footer className="footer">
+                {view === 'new-post' && <NewPost onPublish={handleNewPostPublish} onCancel={handleNewPostCancel} />}
+
+                {view !== 'new-post' &&
+                    location.pathname !== '/settings' &&
+                    location.pathname !== '/favs' && <Button onClick={handleNewPostClick}>+</Button>}
+            </footer>
+        </div>
+    );
 }
 
-export default Home
+export default Home;

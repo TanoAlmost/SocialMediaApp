@@ -9,8 +9,10 @@ import createPostHandler from './createPostHandler.js'
 import toggleLikePostHandler from './toggleLikePostHandler.js'
 import toggleFavPostHandler from './toggleFavPostHandler.js'
 import retrieveFavPostsHandler from './retrieveFavPostsHandler.js'
+import retrieveUserPostsHandler from './retrieveUserPostsHandler.js'
 import deletePostHandler from './deletePostHandler.js'
 import updatePostTextHandler from './updatePostTextHandler.js'
+
 
 
 export {
@@ -26,6 +28,7 @@ export {
     toggleLikePostHandler,
     toggleFavPostHandler,
     retrieveFavPostsHandler,
+    retrieveUserPostsHandler,
     deletePostHandler,
     updatePostTextHandler
 }

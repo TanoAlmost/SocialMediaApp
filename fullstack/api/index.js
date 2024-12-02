@@ -18,7 +18,9 @@ import {
 
     toggleLikePostHandler,
     toggleFavPostHandler,
+
     retrieveFavPostsHandler,
+    retrieveUserPostsHandler,
 
     deletePostHandler,
     updatePostTextHandler
@@ -55,6 +57,8 @@ mongoose.connect(process.env.MONGODB_URL)
         server.patch('/posts/:postId/favs', toggleFavPostHandler)
 
         server.get('/posts/favs', retrieveFavPostsHandler)
+
+        server.get('/users/:userId/posts', retrieveUserPostsHandler);
 
         server.patch('/posts/:postId/text', jsonBodyParser, updatePostTextHandler)
 

@@ -18,7 +18,7 @@
   }
 
   .form {
-    @apply flex flex-col max-w-[240px] gap-[5px] text-black;
+    @apply flex flex-col max-w-[240px] gap-[5px] text-white;
   }
 
   .label {

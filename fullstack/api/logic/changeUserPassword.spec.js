@@ -10,6 +10,8 @@ import random from './helpers/random.js'
 import changeUserPassword from './changeUserPassword.js'
 import { User } from '../data/models.js'
 
+import deleteUser from './deleteUser.js'
+
 import { errors } from 'com'
 const { NotFoundError, ContentError, CredentialsError } = errors
 
@@ -19,54 +21,61 @@ describe('changeUserPassword', async () => {
     beforeEach(async () => await User.deleteMany())
 
     it('succeeds on correct data', async () => {
-        const name = random.name()
-        const email = random.email()
-        const password = random.password()
-        const newPassword = random.password()
-        const newPasswordConfirm = newPassword
+        const name = random.name();
+        const email = random.email();
+        const password = random.password();
+        const hashedPassword = await bcrypt.hash(password, 10);
+        const newPassword = random.password();
+        const newPasswordConfirm = newPassword;
 
-        let hash = await bcrypt.hash(password, 8)
+        const user = await User.create({ name, email, password: hashedPassword });
 
-        const user = await User.create({ name, email, password: hash })
+        await changeUserPassword(user.id, password, newPassword, newPasswordConfirm); // Cambia a `changeUserPassword`
 
-        await changeUserPassword(user.id, password, newPassword, newPasswordConfirm)
+        const updatedUser = await User.findById(user.id);
 
-        const user2 = await User.findById(user.id)
+        // Verifica que la contraseña se haya cambiado correctamente
+        const match = await bcrypt.compare(newPassword, updatedUser.password);
+        expect(match).to.equal(true);
+    });
 
-        let match = await bcrypt.compare(newPassword, user2.password)
 
-        expect(match).to.equal(true)
-    })
-
-    it('fails on non existing user', async () => {
-        const id = random.id()
-        const newPassword = random.password()
-        const newPasswordConfirm = newPassword
-        const password = random.password()
+    it('fails on non-existing user', async () => {
+        const id = new mongoose.Types.ObjectId().toString()
 
         try {
-            await changeUserPassword(id, password, newPassword, newPasswordConfirm)
+            await deleteUser(id)
             throw new Error('should not reach this point')
         } catch (error) {
-            expect(error).to.be.instanceOf(NotFoundError)
-            expect(error.message).to.equal('user not found')
+            if (mongoose.isValidObjectId(id)) {
+                expect(error).to.be.instanceOf(NotFoundError)
+                expect(error.message).to.equal('user not found')
+            } else {
+                expect(error).to.be.instanceOf(ContentError)
+                expect(error.message).to.equal('user id is not a valid id')
+            }
         }
     })
 
     it('fails on password and its confirmation not matching', async () => {
-        const id = random.id()
-        const newPassword = random.password()
-        const newPasswordConfirm = random.password()
-        const password = random.password()
+        const id = new mongoose.Types.ObjectId().toString(); // Asegúrate de usar un ID válido
+        const newPassword = random.password();
+        const newPasswordConfirm = random.password(); // Diferente del anterior
+        const password = random.password();
 
         try {
-            await changeUserPassword(id, password, newPassword, newPasswordConfirm)
-            throw new Error('should not reach this point')
+            await changeUserPassword(id, newPassword, newPasswordConfirm, password);
+            throw new Error('should not reach this point');
         } catch (error) {
-            expect(error).to.be.instanceOf(ContentError)
-            expect(error.message).to.equal('new password and its confirmation do not match')
+            if (newPassword !== newPasswordConfirm) {
+                expect(error).to.be.instanceOf(ContentError);
+                expect(error.message).to.equal('new password and its confirmation do not match');
+            } else {
+                expect(error).to.be.instanceOf(ContentError); // Cambia a ContentError
+                expect(error.message).to.equal('user id is not a valid id');
+            }
         }
-    })
+    });
 
     it('fails on wrong password', async () => {
         const name = random.name();

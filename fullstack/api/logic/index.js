@@ -6,6 +6,7 @@ import changeUserPassword from './changeUserPassword.js'
 import createPost from './createPost.js'
 import retrieveFavPosts from './retrieveFavPosts.js'
 import retrievePosts from './retrievePosts.js'
+import retrieveUserPosts from './retrieveUserPosts.js'
 import toggleFavPost from './toggleFavPost.js'
 import toggleLikePost from './toggleLikePost.js'
 import deletePost from './deletePost.js'
@@ -23,6 +24,7 @@ const logic = {
     createPost,
     retrieveFavPosts,
     retrievePosts,
+    retrieveUserPosts,
     toggleFavPost,
     toggleLikePost,
     deletePost,

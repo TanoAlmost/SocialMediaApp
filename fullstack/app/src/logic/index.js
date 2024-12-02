@@ -9,6 +9,7 @@ import isUserLoggedIn from './isUserLoggedIn'
 import publishPost from './publishPost'
 import retrieveFavPosts from './retrieveFavPosts'
 import retrievePosts from './retrievePosts'
+import retrieveUserPosts from './retrieveUserPosts'
 import toggleFavPost from './toggleFavPost'
 import toggleLikePost from './toggleLikePost'
 import updatePostText from './updatePostText'
@@ -29,6 +30,7 @@ const logic = {
     publishPost,
     retrieveFavPosts,
     retrievePosts,
+    retrieveUserPosts,
     toggleFavPost,
     toggleLikePost,
     updatePostText,

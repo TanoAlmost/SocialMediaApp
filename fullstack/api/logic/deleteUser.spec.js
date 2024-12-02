@@ -35,15 +35,21 @@ describe('deleteUser', () => {
             })
     })
 
-    it('fails on non-existing user', () => {
-        const id = random.id()
+    it('fails on non-existing user', async () => {
+        const id = new mongoose.Types.ObjectId().toString()
 
-        return deleteUser(id)
-            .then(() => { throw new Error('should not reach this point') })
-            .catch(error => {
+        try {
+            await deleteUser(id)
+            throw new Error('should not reach this point')
+        } catch (error) {
+            if (mongoose.isValidObjectId(id)) {
                 expect(error).to.be.instanceOf(NotFoundError)
                 expect(error.message).to.equal('user not found')
-            })
+            } else {
+                expect(error).to.be.instanceOf(ContentError)
+                expect(error.message).to.equal('user id is not a valid id')
+            }
+        }
     })
 
     it('fails with an invalid user id format', async () => {
