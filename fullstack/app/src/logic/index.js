@@ -13,6 +13,7 @@ import toggleFavPost from './toggleFavPost'
 import toggleLikePost from './toggleLikePost'
 import updatePostText from './updatePostText'
 import deletePost from './deletePost'
+import deleteUser from './deleteUser'
 
 
 const logic = {
@@ -23,6 +24,7 @@ const logic = {
     changeUserEmail,
     changeUserPassword,
     isUserLoggedIn,
+    deleteUser,
 
     publishPost,
     retrieveFavPosts,

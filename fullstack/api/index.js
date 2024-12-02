@@ -11,6 +11,7 @@ import {
     retrieveUserHandler,
     changeUserEmailHandler,
     changeUserPasswordHandler,
+    deleteUserHandler,
 
     retrievePostsHandler,
     createPostHandler,
@@ -42,6 +43,8 @@ mongoose.connect(process.env.MONGODB_URL)
         server.patch('/users/email', jsonBodyParser, changeUserEmailHandler)
 
         server.patch('/users/password', jsonBodyParser, changeUserPasswordHandler)
+
+        server.delete('/users/:userId', jsonBodyParser, deleteUserHandler);
 
         server.get('/posts', retrievePostsHandler)
 

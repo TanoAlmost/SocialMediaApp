@@ -1,63 +1,83 @@
-import { useState } from "react"
-import logic from "../logic"
-import { useContext } from "../hooks"
-import { Button } from '../library'
+import { useState } from "react";
+import logic from "../logic";
+import session from "../logic/session"; // Importar session.js
+import { Button } from "../library";
 
 export default function Profile(props) {
-    console.log('profile')
-
-    const context = useContext()
+    console.log("profile");
 
     // Estados para los campos del formulario de email
-    const [newEmail, setNewEmail] = useState('')
-    const [newEmailConfirm, setNewEmailConfirm] = useState('')
-    const [password, setPassword] = useState('')
+    const [newEmail, setNewEmail] = useState("");
+    const [newEmailConfirm, setNewEmailConfirm] = useState("");
+    const [password, setPassword] = useState("");
 
     // Estados para los campos del formulario de password
-    const [currentPassword, setCurrentPassword] = useState('')
-    const [newPassword, setNewPassword] = useState('')
-    const [newPasswordConfirm, setNewPasswordConfirm] = useState('')
+    const [currentPassword, setCurrentPassword] = useState("");
+    const [newPassword, setNewPassword] = useState("");
+    const [newPasswordConfirm, setNewPasswordConfirm] = useState("");
 
     function handleChangeEmailSubmit(event) {
-        event.preventDefault()
+        event.preventDefault();
 
         return (async () => {
             try {
-                await logic.changeUserEmail(newEmail, newEmailConfirm, password)
+                await logic.changeUserEmail(newEmail, newEmailConfirm, password);
 
-                if (props.onSuccess) props.onSuccess()
+                if (props.onSuccess) props.onSuccess();
 
-                alert('Email changed successfully')
+                alert("Email changed successfully");
 
                 // Resetear los valores de estado para vaciar los inputs
-                setNewEmail('')
-                setNewEmailConfirm('')
-                setPassword('')
+                setNewEmail("");
+                setNewEmailConfirm("");
+                setPassword("");
             } catch (error) {
-                context.handleError(error)
+                console.error(error);
             }
-        })()
+        })();
     }
 
     function handleChangePasswordSubmit(event) {
-        event.preventDefault()
+        event.preventDefault();
 
         return (async () => {
             try {
-                await logic.changeUserPassword(currentPassword, newPassword, newPasswordConfirm)
+                await logic.changeUserPassword(currentPassword, newPassword, newPasswordConfirm);
 
-                if (props.onSuccess) props.onSuccess()
+                if (props.onSuccess) props.onSuccess();
 
-                alert('Password changed successfully')
+                alert("Password changed successfully");
 
                 // Resetear los valores de estado para vaciar los inputs
-                setCurrentPassword('')
-                setNewPassword('')
-                setNewPasswordConfirm('')
+                setCurrentPassword("");
+                setNewPassword("");
+                setNewPasswordConfirm("");
             } catch (error) {
-                context.handleError(error)
+                console.error(error);
             }
-        })()
+        })();
+    }
+
+    async function handleDeleteAccount() {
+        if (!window.confirm("Are you sure you want to delete your account? This action is irreversible.")) return;
+
+        try {
+            const userId = session.sessionUserId; // Obtener el userId directamente desde session.js
+            if (!userId) {
+                throw new Error("User ID is undefined. Unable to delete account.");
+            }
+
+            console.log("Attempting to delete user with ID:", userId);
+
+            await logic.deleteUser(userId);
+
+            alert("Your account has been deleted successfully.");
+
+            // Redirigir al usuario o cerrar sesión tras eliminar la cuenta
+            if (props.onAccountDeleted) props.onAccountDeleted();
+        } catch (error) {
+            console.error("Error during account deletion:", error);
+        }
     }
 
     return (
@@ -126,15 +146,14 @@ export default function Profile(props) {
                 />
 
                 <Button type="submit">Update password</Button>
-
-
-
             </form>
 
-            <Button className="text-lg text-white bg-transparent border border-white rounded-full px-6 py-2 hover:bg-white hover:text-[#5F5784] transition duration-300 ease-in-out mt-4" >
+            <Button
+                className="text-lg text-white bg-transparent border border-white rounded-full px-6 py-2 hover:bg-white hover:text-[#5F5784] transition duration-300 ease-in-out mt-4"
+                onClick={handleDeleteAccount}
+            >
                 Delete Account
             </Button>
-
         </div>
-    )
+    );
 }
