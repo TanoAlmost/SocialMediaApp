@@ -1,10 +1,15 @@
 import { useState } from "react";
+import { useNavigate } from "react-router-dom"; // Importar useNavigate
+
 import logic from "../logic";
 import session from "../logic/session"; // Importar session.js
+
 import { Button } from "../library";
 
 export default function Profile(props) {
     console.log("profile");
+
+    const navigate = useNavigate(); // Inicializar navigate
 
     // Estados para los campos del formulario de email
     const [newEmail, setNewEmail] = useState("");
@@ -71,10 +76,13 @@ export default function Profile(props) {
 
             await logic.deleteUser(userId);
 
+            logic.logoutUser(() => {
+                console.log("User logged out. Redirecting to /register...");
+                navigate("/register");
+            });
+
             alert("Your account has been deleted successfully.");
 
-            // Redirigir al usuario o cerrar sesión tras eliminar la cuenta
-            if (props.onAccountDeleted) props.onAccountDeleted();
         } catch (error) {
             console.error("Error during account deletion:", error);
         }
