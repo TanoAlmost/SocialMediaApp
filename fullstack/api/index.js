@@ -73,8 +73,6 @@ mongoose.connect(process.env.MONGODB_URL)
 
         server.patch('/posts/:postId/text', jsonBodyParser, updatePostTextHandler)
 
-        server.get('/users/:userId/profile', retrieveUserProfileHandler);
-
         server.post('/posts/:postId/comments', jsonBodyParser, addCommentsHandler);
 
         server.get('/posts/:postId/comments', getCommentsHandler);

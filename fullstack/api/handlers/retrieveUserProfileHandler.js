@@ -6,13 +6,14 @@ export default function retrieveUserProfileHandler(req, res) {
     retrieveUserProfile(targetUserId)
         .then(profile => {
             if (!profile) {
-                res.status(404).json({ error: 'User not found' });
+                res.status(404).json({ error: 'UserNotFound', message: 'User not found' });
             } else {
                 res.json(profile);
             }
         })
         .catch(error => {
             console.error('Error retrieving user profile:', error);
-            res.status(500).json({ error: 'Internal Server Error', message: error.message });
+            res.status(500).json({ error: 'InternalServerError', message: error.message });
         });
 }
+

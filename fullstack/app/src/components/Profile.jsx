@@ -19,6 +19,7 @@ export default function Profile() {
     const loggedInUserId = session.sessionUserId; // ID del usuario autenticado
     const isOwner = userId === loggedInUserId; // Verifica si el perfil pertenece al usuario autenticado
 
+
     // Cargar la información del usuario y los posts
     useEffect(() => {
         const fetchData = async () => {
@@ -63,6 +64,7 @@ export default function Profile() {
         return <div>Loading user information...</div>;
     }
 
+
     return (
         <div className="profile">
             {editing ? (
@@ -76,31 +78,39 @@ export default function Profile() {
                 {posts.length === 0 ? (
                     <p>This user has not created any posts yet.</p>
                 ) : (
-                    posts.map((post) => (
-                        <Post
-                            key={post.id}
-                            post={post}
-                            isOwner={isOwner}
-                            onToggleLikeClick={async () => {
-                                const updatedPosts = await retrieveUserPosts(userId);
-                                setPosts(updatedPosts);
-                            }}
-                            onToggleFavClick={async () => {
-                                const updatedPosts = await retrieveUserPosts(userId);
-                                setPosts(updatedPosts);
-                            }}
-                            onDeletePost={async () => {
-                                const updatedPosts = await retrieveUserPosts(userId);
-                                setPosts(updatedPosts);
-                            }}
-                            onPostTextUpdate={async () => {
-                                const updatedPosts = await retrieveUserPosts(userId);
-                                setPosts(updatedPosts);
-                            }}
-                        />
-                    ))
+                    posts.map((post) => {
+                        // Agregar los console.log aquí para inspeccionar los datos
+                        console.log('Post author:', post.author);
+                        console.log('Logged in user ID:', loggedInUserId);
+                        console.log('Is owner:', post.author && post.author.id === loggedInUserId);
+
+                        return (
+                            <Post
+                                key={post.id}
+                                post={post}
+                                isOwner={post.author._id === loggedInUserId}// Verifica si el usuario autenticado es el autor
+                                onToggleLikeClick={async () => {
+                                    const updatedPosts = await retrieveUserPosts(userId);
+                                    setPosts(updatedPosts);
+                                }}
+                                onToggleFavClick={async () => {
+                                    const updatedPosts = await retrieveUserPosts(userId);
+                                    setPosts(updatedPosts);
+                                }}
+                                onDeletePost={async () => {
+                                    const updatedPosts = await retrieveUserPosts(userId);
+                                    setPosts(updatedPosts);
+                                }}
+                                onPostTextUpdate={async () => {
+                                    const updatedPosts = await retrieveUserPosts(userId);
+                                    setPosts(updatedPosts);
+                                }}
+                            />
+                        );
+                    })
                 )}
             </section>
         </div>
     );
+
 }

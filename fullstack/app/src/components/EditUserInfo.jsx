@@ -49,6 +49,7 @@ export default function EditUserInfo({ user, onSave, onCancel }) {
         <form onSubmit={handleSubmit} className="edit-user-info">
             <label>
                 Profile Picture URL:
+                <br />
                 <input
                     type="text"
                     name="profilePicture"
@@ -60,6 +61,7 @@ export default function EditUserInfo({ user, onSave, onCancel }) {
             </label>
             <label>
                 Status:
+                <br />
                 <input
                     type="text"
                     name="status"
@@ -68,7 +70,8 @@ export default function EditUserInfo({ user, onSave, onCancel }) {
                 />
             </label>
             <label>
-                Interests (comma-separated):
+                Interests:
+                <br />
                 <input
                     type="text"
                     name="interests"
@@ -78,14 +81,15 @@ export default function EditUserInfo({ user, onSave, onCancel }) {
             </label>
             <label>
                 Bio:
+                <br />
                 <textarea
                     name="bio"
                     value={formData.bio}
                     onChange={handleChange}
                 ></textarea>
             </label>
-            <button type="submit" disabled={!!imageError}>Save</button>
-            <button type="button" onClick={onCancel}>
+            <button className="option-button" type="submit" disabled={!!imageError}>Save</button>
+            <button className="option-button" type="button" onClick={onCancel}>
                 Cancel
             </button>
         </form>

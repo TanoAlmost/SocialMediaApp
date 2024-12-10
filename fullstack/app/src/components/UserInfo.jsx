@@ -13,7 +13,7 @@ export default function UserInfo({ user, isOwner, onEditClick }) {
             <p>Interests: {user.interests?.join(', ') || 'No interests specified'}</p>
             <p>Bio: {user.bio || 'No bio available'}</p>
 
-            {isOwner && <button onClick={onEditClick}>Edit</button>} {/* Mostrar botón solo si es el propietario */}
+            {isOwner && <button className="option-button" onClick={onEditClick}>Edit</button>} {/* Mostrar botón solo si es el propietario */}
         </section>
     );
 }

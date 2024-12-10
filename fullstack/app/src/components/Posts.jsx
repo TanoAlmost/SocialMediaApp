@@ -9,22 +9,24 @@ function Posts(props) {
 
     const context = useContext()
 
-    const refreshPosts = () => {
+    const refreshPosts = async () => {
         try {
             props.loadPosts((error, posts) => {
                 if (error) {
-                    context.handleError(error)
-                    return
+                    console.error('Error al cargar posts:', error);
+                    context.handleError(error);
+                    return;
                 }
 
-                console.log('Posts recibidos:', posts) // Verifica los datos recibidos
-                posts.reverse()
-                setPosts(posts)
-            })
+                console.log('Posts actualizados desde el servidor:', posts);
+                setPosts(posts.reverse());
+            });
         } catch (error) {
-            context.handleError(error)
+            console.error('Error inesperado al refrescar posts:', error);
+            context.handleError(error);
         }
-    }
+    };
+
 
     useEffect(() => {
         console.log('Posts effect')

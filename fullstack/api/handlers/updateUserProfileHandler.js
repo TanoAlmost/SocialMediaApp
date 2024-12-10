@@ -1,14 +1,13 @@
 import jwt from 'jsonwebtoken';
 import { User } from '../data/models.js';
 
-export const updateUserProfileHandler = async (req, res) => {
-    const { userId } = req.params; // ID del usuario que se va a actualizar
+const updateUserProfileHandler = async (req, res) => {
+    const { userId } = req.params;
     const token = req.headers.authorization?.split(' ')[1];
 
     try {
         const { sub: authenticatedUserId } = jwt.verify(token, process.env.JWT_SECRET);
 
-        // Validar que el usuario autenticado coincide con el usuario que se está actualizando
         if (authenticatedUserId !== userId) {
             return res.status(403).json({ error: 'Unauthorized', message: 'You cannot edit another user\'s profile.' });
         }
@@ -31,3 +30,5 @@ export const updateUserProfileHandler = async (req, res) => {
         res.status(500).json({ error: 'InternalServerError', message: error.message });
     }
 };
+
+export default updateUserProfileHandler;

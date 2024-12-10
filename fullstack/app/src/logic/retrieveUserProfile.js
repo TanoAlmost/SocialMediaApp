@@ -7,20 +7,19 @@ async function retrieveUserProfile(userId) {
     const req = {
         method: 'GET',
         headers: {
-            Authorization: `Bearer ${session.token}`, // Asegúrate de que el token es válido
-        },
+            Authorization: `Bearer ${session.token}`
+        }
     };
 
     const response = await fetch(`${import.meta.env.VITE_API_URL}/users/${userId}/profile`, req);
 
     if (!response.ok) {
-        const body = await response.text(); // Cambiado a .text() para depurar errores HTML
-        console.error('Server response:', body); // Registra el cuerpo de la respuesta
-        throw new Error(`Failed to fetch user profile: ${response.statusText}`);
+        const body = await response.json();
+        const ErrorConstructor = errors[body.error] || Error; // Fallback a Error genérico
+        throw new ErrorConstructor(body.message);
     }
 
-    return response.json(); // Devuelve los datos en formato JSON
+    return response.json(); // Devuelve el perfil de usuario
 }
 
 export default retrieveUserProfile;
-
