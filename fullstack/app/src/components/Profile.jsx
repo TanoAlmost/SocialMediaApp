@@ -1,167 +1,106 @@
-import { useState } from "react";
-import { useNavigate } from "react-router-dom"; // Importar useNavigate
+import { useEffect, useState } from 'react';
+import { useParams } from 'react-router-dom';
+import retrieveUserProfile from '../logic/retrieveUserProfile';
+import retrieveUserPosts from '../logic/retrieveUserPosts';
+import updateUserProfile from '../logic/updateUserProfile';
+import UserInfo from './UserInfo';
+import EditUserInfo from './EditUserInfo';
+import session from '../logic/session'; // Importar la sesión
+import Post from './Post'; // Importar el componente Post
 
-import logic from "../logic";
-import session from "../logic/session"; // Importar session.js
+export default function Profile() {
+    const { userId } = useParams();
+    const [user, setUser] = useState(null);
+    const [posts, setPosts] = useState([]);
+    const [editing, setEditing] = useState(false);
+    const [error, setError] = useState(null);
+    const [loading, setLoading] = useState(true);
 
-import { Button } from "../library";
+    const loggedInUserId = session.sessionUserId; // ID del usuario autenticado
+    const isOwner = userId === loggedInUserId; // Verifica si el perfil pertenece al usuario autenticado
 
-export default function Profile(props) {
-    console.log("profile");
-
-    const navigate = useNavigate(); // Inicializar navigate
-
-    // Estados para los campos del formulario de email
-    const [newEmail, setNewEmail] = useState("");
-    const [newEmailConfirm, setNewEmailConfirm] = useState("");
-    const [password, setPassword] = useState("");
-
-    // Estados para los campos del formulario de password
-    const [currentPassword, setCurrentPassword] = useState("");
-    const [newPassword, setNewPassword] = useState("");
-    const [newPasswordConfirm, setNewPasswordConfirm] = useState("");
-
-    function handleChangeEmailSubmit(event) {
-        event.preventDefault();
-
-        return (async () => {
+    // Cargar la información del usuario y los posts
+    useEffect(() => {
+        const fetchData = async () => {
+            setLoading(true);
             try {
-                await logic.changeUserEmail(newEmail, newEmailConfirm, password);
-
-                if (props.onSuccess) props.onSuccess();
-
-                alert("Email changed successfully");
-
-                // Resetear los valores de estado para vaciar los inputs
-                setNewEmail("");
-                setNewEmailConfirm("");
-                setPassword("");
+                const userData = await retrieveUserProfile(userId);
+                const userPosts = await retrieveUserPosts(userId);
+                setUser(userData);
+                setPosts(userPosts || []);
             } catch (error) {
-                console.error(error);
+                console.error('Error loading data:', error);
+            } finally {
+                setLoading(false);
             }
-        })();
-    }
+        };
 
-    function handleChangePasswordSubmit(event) {
-        event.preventDefault();
+        fetchData();
+    }, [userId]); // `userId` como dependencia garantiza que cambie el conteni
 
-        return (async () => {
-            try {
-                await logic.changeUserPassword(currentPassword, newPassword, newPasswordConfirm);
-
-                if (props.onSuccess) props.onSuccess();
-
-                alert("Password changed successfully");
-
-                // Resetear los valores de estado para vaciar los inputs
-                setCurrentPassword("");
-                setNewPassword("");
-                setNewPasswordConfirm("");
-            } catch (error) {
-                console.error(error);
-            }
-        })();
-    }
-
-    async function handleDeleteAccount() {
-        if (!window.confirm("Are you sure you want to delete your account? This action is irreversible.")) return;
-
+    // Manejar la actualización del perfil
+    const handleSave = async (profileData) => {
         try {
-            const userId = session.sessionUserId; // Obtener el userId directamente desde session.js
-            if (!userId) {
-                throw new Error("User ID is undefined. Unable to delete account.");
-            }
+            await updateUserProfile(userId, profileData);
 
-            console.log("Attempting to delete user with ID:", userId);
+            const updatedUser = await retrieveUserProfile(userId);
+            const userPosts = await retrieveUserPosts(userId);
 
-            await logic.deleteUser(userId);
-
-            logic.logoutUser(() => {
-                console.log("User logged out. Redirecting to /register...");
-                navigate("/register");
-            });
-
-            alert("Your account has been deleted successfully.");
-
+            setUser(updatedUser);
+            setPosts(userPosts || []);
+            setEditing(false);
         } catch (error) {
-            console.error("Error during account deletion:", error);
+            console.error('Error updating user info:', error);
+            setError('Unable to update user information.');
         }
+    };
+
+    if (error) {
+        return <div>Error: {error}</div>;
+    }
+
+    if (!user) {
+        return <div>Loading user information...</div>;
     }
 
     return (
-        <div className="container">
-            <h2>Update e-mail</h2>
+        <div className="profile">
+            {editing ? (
+                <EditUserInfo user={user} onSave={handleSave} onCancel={() => setEditing(false)} />
+            ) : (
+                <UserInfo user={user} isOwner={isOwner} onEditClick={() => setEditing(true)} />
+            )}
 
-            <form className="form" onSubmit={handleChangeEmailSubmit}>
-                <label className="label" htmlFor="new-email-input">New e-mail</label>
-                <input
-                    className="input"
-                    id="new-email-input"
-                    type="email"
-                    value={newEmail}
-                    onChange={(e) => setNewEmail(e.target.value)}
-                />
-
-                <label className="label" htmlFor="new-email-confirm-input">Confirm new e-mail</label>
-                <input
-                    className="input"
-                    id="new-email-confirm-input"
-                    type="email"
-                    value={newEmailConfirm}
-                    onChange={(e) => setNewEmailConfirm(e.target.value)}
-                />
-
-                <label className="label" htmlFor="email-password-input">Password</label>
-                <input
-                    className="input"
-                    type="password"
-                    id="email-password-input"
-                    value={password}
-                    onChange={(e) => setPassword(e.target.value)}
-                />
-
-                <Button type="submit">Update e-mail</Button>
-            </form>
-
-            <h2>Update password</h2>
-
-            <form className="form" onSubmit={handleChangePasswordSubmit}>
-                <label className="label" htmlFor="password-current-input">Current password</label>
-                <input
-                    className="input"
-                    type="password"
-                    id="password-current-input"
-                    value={currentPassword}
-                    onChange={(e) => setCurrentPassword(e.target.value)}
-                />
-
-                <label className="label" htmlFor="new-password-input">New password</label>
-                <input
-                    className="input"
-                    id="new-password-input"
-                    type="password"
-                    value={newPassword}
-                    onChange={(e) => setNewPassword(e.target.value)}
-                />
-
-                <label className="label" htmlFor="new-password-confirm-input">Confirm new password</label>
-                <input
-                    className="input"
-                    id="new-password-confirm-input"
-                    type="password"
-                    value={newPasswordConfirm}
-                    onChange={(e) => setNewPasswordConfirm(e.target.value)}
-                />
-
-                <Button type="submit">Update password</Button>
-            </form>
-
-            <Button
-                className="text-lg text-white bg-transparent border border-white rounded-full px-6 py-2 hover:bg-white hover:text-[#5F5784] transition duration-300 ease-in-out mt-4"
-                onClick={handleDeleteAccount}
-            >
-                Delete Account
-            </Button>
+            <section className="user-posts">
+                <h1>Posts</h1>
+                {posts.length === 0 ? (
+                    <p>This user has not created any posts yet.</p>
+                ) : (
+                    posts.map((post) => (
+                        <Post
+                            key={post.id}
+                            post={post}
+                            isOwner={isOwner}
+                            onToggleLikeClick={async () => {
+                                const updatedPosts = await retrieveUserPosts(userId);
+                                setPosts(updatedPosts);
+                            }}
+                            onToggleFavClick={async () => {
+                                const updatedPosts = await retrieveUserPosts(userId);
+                                setPosts(updatedPosts);
+                            }}
+                            onDeletePost={async () => {
+                                const updatedPosts = await retrieveUserPosts(userId);
+                                setPosts(updatedPosts);
+                            }}
+                            onPostTextUpdate={async () => {
+                                const updatedPosts = await retrieveUserPosts(userId);
+                                setPosts(updatedPosts);
+                            }}
+                        />
+                    ))
+                )}
+            </section>
         </div>
     );
 }

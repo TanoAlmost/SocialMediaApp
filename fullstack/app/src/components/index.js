@@ -1,8 +1,7 @@
 import Post from './Post'
 import Posts from './Posts'
-import Profile from './Profile'
 import NewPost from './NewPost'
-import UserPosts from './userPosts'
+import Profile from './Profile'
 import Settings from './Settings'
 import ChangeCredentials from './ChangeCredentials'
 
@@ -11,7 +10,6 @@ export {
     Posts,
     Profile,
     NewPost,
-    UserPosts,
     Settings,
     ChangeCredentials
 }

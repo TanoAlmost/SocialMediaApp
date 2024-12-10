@@ -1,9 +1,8 @@
 import { validate, errors } from 'com';
 import session from './session';
 
-function retrieveUserPosts(userId, callback) {
+async function retrieveUserPosts(userId) {
     validate.id(userId, 'userId');
-    validate.function(callback, 'callback');
 
     const req = {
         method: 'GET',
@@ -12,19 +11,15 @@ function retrieveUserPosts(userId, callback) {
         }
     };
 
-    fetch(`${import.meta.env.VITE_API_URL}/users/${userId}/posts`, req)
-        .then(res => {
-            if (!res.ok) {
-                return res.json()
-                    .then(body => {
-                        const ErrorConstructor = errors[body.error] || Error; // Fallback a Error genérico
-                        throw new ErrorConstructor(body.message);
-                    });
-            }
-            return res.json();
-        })
-        .then(posts => callback(null, posts))
-        .catch(error => callback(error));
+    const response = await fetch(`${import.meta.env.VITE_API_URL}/users/${userId}/posts`, req);
+
+    if (!response.ok) {
+        const body = await response.json();
+        const ErrorConstructor = errors[body.error] || Error; // Fallback a Error genérico
+        throw new ErrorConstructor(body.message);
+    }
+
+    return response.json(); // Devuelve el resultado como una Promesa
 }
 
 export default retrieveUserPosts;

@@ -1,5 +1,6 @@
-function Input (props) {
-    return <input className="input" type={props.type} id={props.id}/>
+function Input(props) {
+    console.log('Input props:', props); // Depuración de props
+    return <input className="input" {...props} />;
 }
 
-export default Input
+export default Input;

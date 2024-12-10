@@ -4,7 +4,7 @@ import { Routes, Route, useNavigate, useLocation } from 'react-router-dom';
 import logic from '../logic';
 
 import { Button, Link } from '../library';
-import { Posts, Profile, NewPost, UserPosts, Settings } from '../components'; // Importar Settings
+import { Posts, Profile, NewPost, Settings } from '../components'; // Importar Settings
 import logo from '../assets/logo-w.png';
 
 import session from '../logic/session';
@@ -89,7 +89,7 @@ function Home(props) {
             <Routes>
                 <Route path="/settings" element={<Settings onLogoutClick={props.onLogoutClick} />} /> {/* Pasar onLogoutClick */}
                 <Route path="/favs" element={<Posts loadPosts={logic.retrieveFavPosts} />} />
-                <Route path="/users/:userId" element={<UserPosts />} />
+                <Route path="/users/:userId" element={<Profile />} />
                 <Route path="/" element={<Posts loadPosts={logic.retrievePosts} stamp={stamp} />} />
             </Routes>
 

@@ -1,9 +1,13 @@
 import registerUser from './registerUser'
 import loginUser from './loginUser'
 import logoutUser from './logoutUser'
+
 import retrieveUser from './retrieveUser'
+import retrieveUserProfile from './retrieveUserProfile'
+
 import changeUserEmail from './changeUserEmail'
 import changeUserPassword from './changeUserPassword'
+
 import isUserLoggedIn from './isUserLoggedIn'
 
 import publishPost from './publishPost'
@@ -13,6 +17,10 @@ import retrieveUserPosts from './retrieveUserPosts'
 import toggleFavPost from './toggleFavPost'
 import toggleLikePost from './toggleLikePost'
 import updatePostText from './updatePostText'
+
+import addComment from './addComment'
+import retrieveComments from './retrieveComments'
+
 import deletePost from './deletePost'
 import deleteUser from './deleteUser'
 
@@ -22,6 +30,12 @@ const logic = {
     loginUser,
     logoutUser,
     retrieveUser,
+    retrieveUserProfile,
+
+    addComment,
+    retrieveComments,
+
+
     changeUserEmail,
     changeUserPassword,
     isUserLoggedIn,

@@ -12,13 +12,25 @@ import retrieveFavPostsHandler from './retrieveFavPostsHandler.js'
 import retrieveUserPostsHandler from './retrieveUserPostsHandler.js'
 import deletePostHandler from './deletePostHandler.js'
 import updatePostTextHandler from './updatePostTextHandler.js'
+import retrieveUserProfileHandler from './retrieveUserProfileHandler.js'
+import updateUserProfileHandler from './updateUserProfileHandler.js'
+import addCommentsHandler from './addCommentsHandler.js'
+import getCommentsHandler from './getCommentsHandler.js'
 
 
 
 export {
     registerUserHandler,
     authenticateUserHandler,
+
+    addCommentsHandler,
+    getCommentsHandler,
+
+
     retrieveUserHandler,
+    retrieveUserProfileHandler,
+    updateUserProfileHandler,
+
     changeUserEmailHandler,
     changeUserPasswordHandler,
     deleteUserHandler,

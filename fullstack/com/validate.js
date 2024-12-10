@@ -34,13 +34,21 @@ function id(id, explain) {
     if (!ID_REGEX.test(id)) throw new ContentError(`${explain} is not a valid id`)
 }
 
+function object(value, explain) {
+    if (typeof value !== 'object' || value === null || Array.isArray(value)) {
+        throw new TypeError(`${explain} must be a valid object`);
+    }
+}
+
 const validate = {
     text,
     email,
     password,
     number,
     function: funktion,
-    id
-}
+    id,
+    object // Agregamos la función object
+};
 
-export default validate
+export default validate;
+

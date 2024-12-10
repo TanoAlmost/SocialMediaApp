@@ -9,6 +9,10 @@ import {
     registerUserHandler,
     authenticateUserHandler,
     retrieveUserHandler,
+
+    retrieveUserProfileHandler,
+    updateUserProfileHandler,
+
     changeUserEmailHandler,
     changeUserPasswordHandler,
     deleteUserHandler,
@@ -21,6 +25,9 @@ import {
 
     retrieveFavPostsHandler,
     retrieveUserPostsHandler,
+
+    addCommentsHandler,
+    getCommentsHandler,
 
     deletePostHandler,
     updatePostTextHandler
@@ -42,6 +49,10 @@ mongoose.connect(process.env.MONGODB_URL)
 
         server.get('/users', retrieveUserHandler)
 
+        server.get('/users/:userId/profile', retrieveUserProfileHandler);
+
+        server.patch('/users/:userId/profile', jsonBodyParser, updateUserProfileHandler);
+
         server.patch('/users/email', jsonBodyParser, changeUserEmailHandler)
 
         server.patch('/users/password', jsonBodyParser, changeUserPasswordHandler)
@@ -61,6 +72,12 @@ mongoose.connect(process.env.MONGODB_URL)
         server.get('/users/:userId/posts', retrieveUserPostsHandler);
 
         server.patch('/posts/:postId/text', jsonBodyParser, updatePostTextHandler)
+
+        server.get('/users/:userId/profile', retrieveUserProfileHandler);
+
+        server.post('/posts/:postId/comments', jsonBodyParser, addCommentsHandler);
+
+        server.get('/posts/:postId/comments', getCommentsHandler);
 
         // Agrega la ruta DELETE para eliminar un post
         server.delete('/posts/:postId', deletePostHandler)
