@@ -15,13 +15,15 @@ function addCommentToPost(postId, userId, text) {
                 throw new Error('Post not found.');
             }
 
-            const comment = { author: userId, text, createdAt: new Date() };
+            const ObjectId = Post.db.base.Types.ObjectId; // 👈 viene de mongoose, pero a través del model
+            const comment = { author: new ObjectId(userId), text, createdAt: new Date() };
+
             console.log('Adding comment:', comment);
 
-            post.comments.push(comment); // Añadir el comentario al array
+            post.comments.push(comment);
             return post.save().then(() => {
                 console.log('Post saved successfully with new comment.');
-                return comment; // Devuelve el comentario añadido
+                return comment;
             });
         })
         .catch((error) => {
@@ -31,4 +33,3 @@ function addCommentToPost(postId, userId, text) {
 }
 
 export default addCommentToPost;
-

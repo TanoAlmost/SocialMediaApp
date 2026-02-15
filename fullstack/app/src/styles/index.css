@@ -21,7 +21,7 @@
     @apply flex flex-col max-w-[240px] gap-[5px] text-black;
   }
 
-  .label {
+  label {
     @apply font-bold text-white;
   }
 
@@ -29,8 +29,12 @@
     @apply font-bold text-black;
   }
 
-  .input {
+  input {
     @apply border-[2px] border-solid border-black p-[5px] text-black;
+  }
+
+  textarea {
+    @apply border-[2px] border-solid border-black p-[1px] text-black;
   }
 
   .button {

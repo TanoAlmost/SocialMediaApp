@@ -20,24 +20,30 @@ export default function Profile() {
     const isOwner = userId === loggedInUserId; // Verifica si el perfil pertenece al usuario autenticado
 
 
-    // Cargar la información del usuario y los posts
     useEffect(() => {
         const fetchData = async () => {
             setLoading(true);
             try {
+                console.log('Fetching user profile for userId:', userId); // Debug
                 const userData = await retrieveUserProfile(userId);
+                console.log('User profile data:', userData); // Debug
+
                 const userPosts = await retrieveUserPosts(userId);
+                console.log('User posts:', userPosts); // Debug
+
                 setUser(userData);
                 setPosts(userPosts || []);
             } catch (error) {
                 console.error('Error loading data:', error);
+                setError(error.message);
             } finally {
                 setLoading(false);
             }
         };
 
         fetchData();
-    }, [userId]); // `userId` como dependencia garantiza que cambie el conteni
+    }, [userId]);
+
 
     // Manejar la actualización del perfil
     const handleSave = async (profileData) => {

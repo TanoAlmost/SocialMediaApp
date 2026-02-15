@@ -10,25 +10,34 @@ function deleteUser(userId) {
             if (!user)
                 throw new NotFoundError('user not found');
 
+            const ObjectId = Post.db.base.Types.ObjectId;
+            const idObj = new ObjectId(userId);
+
             // Eliminar el usuario y sus publicaciones
             return Promise.all([
                 User.findByIdAndDelete(userId),
-                Post.deleteMany({ author: userId })
+                Post.deleteMany({ author: userId }),
+                Post.updateMany(
+                    { 'comments.author': userId },
+                    { $pull: { comments: { author: userId } } }
+                ),
+                Post.updateMany(
+                    { likes: { $in: [idObj, userId] } },
+                    { $pull: { likes: { $in: [idObj, userId] } } }
+                )
             ]);
         })
         .then(([deletedUser, deletedPostsResult]) => {
             if (!deletedUser)
                 throw new NotFoundError('user not found after attempting to delete');
 
-            // Opcional: Puedes verificar cuántos posts fueron eliminados
             console.log(`Deleted ${deletedPostsResult.deletedCount} posts of the user.`);
 
-            // Usuario y publicaciones eliminados correctamente
-            return; // Retornamos para indicar que la operación se completó
+            return;
         })
         .catch(error => {
             if (error instanceof NotFoundError) {
-                throw error; // Re-lanzamos el error para que sea manejado externamente
+                throw error;
             } else {
                 throw new SystemError(error.message);
             }

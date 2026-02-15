@@ -36,7 +36,8 @@ function Post(props) {
         };
 
         fetchComments();
-    }, [props.post.id, context]);
+    }, [props.post.id, props.post.comments?.length, context]);
+
 
     const handleAddComment = async (event) => {
         event.preventDefault();

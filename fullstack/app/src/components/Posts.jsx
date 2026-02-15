@@ -19,7 +19,8 @@ function Posts(props) {
                 }
 
                 console.log('Posts actualizados desde el servidor:', posts);
-                setPosts(posts.reverse());
+                setPosts(posts.slice().reverse());
+
             });
         } catch (error) {
             console.error('Error inesperado al refrescar posts:', error);
@@ -32,7 +33,15 @@ function Posts(props) {
         console.log('Posts effect')
 
         refreshPosts()
+
+        const intervalId = setInterval(() => {
+            refreshPosts()
+        }, 3000
+        ) // cada 3s (ajusta si quieres)
+
+        return () => clearInterval(intervalId)
     }, [props.stamp])
+
 
     return <div className="posts">
         {posts.map(post =>
