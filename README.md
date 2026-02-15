@@ -1,7 +1,7 @@
 
 # SocialMediaApp API Documentation
 
-**SocialMediaApp** está diseñado para fomentar la interacción social auténtica, promoviendo la comunicación, empatía, adaptabilidad y colaboración entre usuarios. Esta API permite a los usuarios registrarse, autenticarse, crear publicaciones, y reaccionar a los posts de otros.
+**SocialMediaApp** está diseñado para fomentar la interacción social auténtica, promoviendo la comunicación, empatía, adaptabilidad y colaboración entre usuarios. Esta APP permite a los usuarios registrarse, autenticarse, crear publicaciones, y reaccionar a los posts de otros.
 
 ## Base URL
 - **URL:** `http://localhost:9000`
