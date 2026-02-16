@@ -7,19 +7,39 @@ import { useContext } from '../hooks';
 import session from '../logic/session';
 import logic from '../logic';
 
+function timeAgo(dateInput) {
+    const date = new Date(dateInput)
+    const diffMs = Date.now() - date.getTime()
+    const diffSec = Math.floor(diffMs / 1000)
+
+    if (diffSec < 60) return `hace ${diffSec}s`
+
+    const diffMin = Math.floor(diffSec / 60)
+    if (diffMin < 60) return `hace ${diffMin} min`
+
+    const diffH = Math.floor(diffMin / 60)
+    if (diffH < 24) return `hace ${diffH} h`
+
+    const diffD = Math.floor(diffH / 24)
+    if (diffD < 7) return `hace ${diffD} día${diffD === 1 ? '' : 's'}`
+
+    const diffW = Math.floor(diffD / 7)
+    return `hace ${diffW} semana${diffW === 1 ? '' : 's'}`
+}
+
 function Post(props) {
-    console.log('Post');
+    console.log('Post')
 
-    const [view, setView] = useState(null);
-    const [comments, setComments] = useState([]); // Estado para los comentarios
-    const [newComment, setNewComment] = useState(''); // Estado para el nuevo comentario
-    const [loadingComments, setLoadingComments] = useState(true);
+    const [view, setView] = useState(null)
+    const [comments, setComments] = useState([])
+    const [newComment, setNewComment] = useState('')
+    const [loadingComments, setLoadingComments] = useState(true)
 
+    const sessionUserId = session.sessionUserId
 
-    const sessionUserId = session.sessionUserId;
+    const context = useContext()
+    const navigate = useNavigate()
 
-    const context = useContext();
-    const navigate = useNavigate();
 
     useEffect(() => {
         let cancelled = false
@@ -200,10 +220,13 @@ function Post(props) {
                 ) : comments.length === 0 ? (
                     <p>No comments yet.</p>
                 ) : (
-                    comments.map((comment, index) => (
+                    [...comments].reverse().map((comment, index) => (
                         <div key={index} className="comment">
-                            <strong>{comment.author.name}:</strong>
-                            <p>{comment.text}</p>
+                            <strong>{comment.author?.name ?? 'Unknown'}:</strong>
+                            <span> {comment.text}</span>
+                            <small style={{ marginLeft: 8, opacity: 0.6 }}>
+                                {comment.createdAt ? timeAgo(comment.createdAt) : ''}
+                            </small>
                         </div>
                     ))
                 )}
