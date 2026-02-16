@@ -19,22 +19,18 @@ export default function Profile() {
     const loggedInUserId = session.sessionUserId; // ID del usuario autenticado
     const isOwner = userId === loggedInUserId; // Verifica si el perfil pertenece al usuario autenticado
 
-
     useEffect(() => {
+        let intervalId;
+
         const fetchData = async () => {
             setLoading(true);
             try {
-                console.log('Fetching user profile for userId:', userId); // Debug
                 const userData = await retrieveUserProfile(userId);
-                console.log('User profile data:', userData); // Debug
-
                 const userPosts = await retrieveUserPosts(userId);
-                console.log('User posts:', userPosts); // Debug
 
                 setUser(userData);
                 setPosts(userPosts || []);
             } catch (error) {
-                console.error('Error loading data:', error);
                 setError(error.message);
             } finally {
                 setLoading(false);
@@ -42,6 +38,15 @@ export default function Profile() {
         };
 
         fetchData();
+
+        intervalId = setInterval(() => {
+            // solo refrescamos posts (más ligero que perfil)
+            retrieveUserPosts(userId)
+                .then(userPosts => setPosts(userPosts || []))
+                .catch(err => console.error(err));
+        }, 3000);
+
+        return () => clearInterval(intervalId);
     }, [userId]);
 
 
