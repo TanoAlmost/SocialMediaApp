@@ -214,7 +214,9 @@ function Post(props) {
 
             {/* Sección de comentarios */}
             <section className="comments">
-                <h3>Comments</h3>
+                <h3 style={{ fontWeight: 'bold' }}>
+                    Comments:
+                </h3>
                 {loadingComments ? (
                     <p>Loading comments...</p>
                 ) : comments.length === 0 ? (
