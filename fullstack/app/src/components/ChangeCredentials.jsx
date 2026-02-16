@@ -4,7 +4,7 @@ import { useNavigate } from 'react-router-dom';
 import { useContext } from "../hooks/";
 import changeUserEmail from '../logic/changeUserEmail';
 import changeUserPassword from '../logic/changeUserPassword';
-import Context from '../context';
+import Context from '../contexts/Context';
 
 export default function ChangeCredentials() {
     console.log('ChangeCredentials');
