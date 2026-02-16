@@ -7,6 +7,7 @@ import UserInfo from './UserInfo';
 import EditUserInfo from './EditUserInfo';
 import session from '../logic/session'; // Importar la sesión
 import Post from './Post'; // Importar el componente Post
+import Posts from './Posts';
 
 export default function Profile() {
     const { userId } = useParams();
@@ -21,6 +22,10 @@ export default function Profile() {
 
     useEffect(() => {
         let intervalId;
+        let cancelled = false;
+
+        const normalizePosts = (userPosts) =>
+            Array.isArray(userPosts) ? [...userPosts].reverse() : [];
 
         const fetchData = async () => {
             setLoading(true);
@@ -28,25 +33,41 @@ export default function Profile() {
                 const userData = await retrieveUserProfile(userId);
                 const userPosts = await retrieveUserPosts(userId);
 
+                if (cancelled) return;
+
                 setUser(userData);
-                setPosts(userPosts || []);
+                console.log("REFRESH posts[0] comments:", userPosts?.[0]?.comments?.length)
+
+                setPosts(normalizePosts(userPosts));
             } catch (error) {
+                if (cancelled) return;
                 setError(error.message);
             } finally {
+                if (cancelled) return;
                 setLoading(false);
+            }
+        };
+
+        const refreshPosts = async () => {
+            try {
+                const userPosts = await retrieveUserPosts(userId);
+                if (cancelled) return;
+                setPosts(normalizePosts(userPosts));
+            } catch (err) {
+                console.error(err);
             }
         };
 
         fetchData();
 
         intervalId = setInterval(() => {
-            // solo refrescamos posts (más ligero que perfil)
-            retrieveUserPosts(userId)
-                .then(userPosts => setPosts(userPosts || []))
-                .catch(err => console.error(err));
+            refreshPosts();
         }, 3000);
 
-        return () => clearInterval(intervalId);
+        return () => {
+            cancelled = true;
+            clearInterval(intervalId);
+        };
     }, [userId]);
 
 
@@ -59,7 +80,7 @@ export default function Profile() {
             const userPosts = await retrieveUserPosts(userId);
 
             setUser(updatedUser);
-            setPosts(userPosts || []);
+            setPosts(Array.isArray(userPosts) ? [...userPosts].reverse() : []);
             setEditing(false);
         } catch (error) {
             console.error('Error updating user info:', error);
@@ -90,7 +111,6 @@ export default function Profile() {
                     <p>This user has not created any posts yet.</p>
                 ) : (
                     posts.map((post) => {
-                        // Agregar los console.log aquí para inspeccionar los datos
                         console.log('Post author:', post.author);
                         console.log('Logged in user ID:', loggedInUserId);
                         console.log('Is owner:', post.author && post.author.id === loggedInUserId);
@@ -99,22 +119,22 @@ export default function Profile() {
                             <Post
                                 key={post.id}
                                 post={post}
-                                isOwner={post.author._id === loggedInUserId}// Verifica si el usuario autenticado es el autor
+                                isOwner={(post.author?._id || post.author?.id) === loggedInUserId}
                                 onToggleLikeClick={async () => {
                                     const updatedPosts = await retrieveUserPosts(userId);
-                                    setPosts(updatedPosts);
+                                    setPosts(Array.isArray(updatedPosts) ? [...updatedPosts].reverse() : []);
                                 }}
                                 onToggleFavClick={async () => {
                                     const updatedPosts = await retrieveUserPosts(userId);
-                                    setPosts(updatedPosts);
+                                    setPosts(Array.isArray(updatedPosts) ? [...updatedPosts].reverse() : []);
                                 }}
                                 onDeletePost={async () => {
                                     const updatedPosts = await retrieveUserPosts(userId);
-                                    setPosts(updatedPosts);
+                                    setPosts(Array.isArray(updatedPosts) ? [...updatedPosts].reverse() : []);
                                 }}
                                 onPostTextUpdate={async () => {
                                     const updatedPosts = await retrieveUserPosts(userId);
-                                    setPosts(updatedPosts);
+                                    setPosts(Array.isArray(updatedPosts) ? [...updatedPosts].reverse() : []);
                                 }}
                             />
                         );

@@ -15,28 +15,52 @@ function Post(props) {
     const [newComment, setNewComment] = useState(''); // Estado para el nuevo comentario
     const [loadingComments, setLoadingComments] = useState(true);
 
+
     const sessionUserId = session.sessionUserId;
 
     const context = useContext();
     const navigate = useNavigate();
 
     useEffect(() => {
-        const fetchComments = async () => {
-            console.log('Fetching comments for post:', props.post.id);
-            try {
-                const comments = await logic.retrieveComments(props.post.id);
-                console.log('Fetched comments:', comments);
-                setComments(comments);
-            } catch (error) {
-                console.error('Error fetching comments:', error);
-                context.handleError(error);
-            } finally {
-                setLoadingComments(false);
-            }
-        };
+        let cancelled = false
 
-        fetchComments();
-    }, [props.post.id, props.post.comments?.length, context]);
+        const fetchComments = async () => {
+            console.log('Fetching comments for post:', props.post.id)
+
+            try {
+                const comments = await logic.retrieveComments(props.post.id)
+
+                if (!cancelled) {
+                    setComments(comments)
+                }
+
+            } catch (error) {
+                console.error('Error fetching comments:', error)
+                context.handleError(error)
+            } finally {
+                if (!cancelled) {
+                    setLoadingComments(false)
+                }
+            }
+        }
+
+        // Primera carga
+        fetchComments()
+
+        // Polling cada 3s
+        const intervalId = setInterval(() => {
+            fetchComments()
+        }, 3000)
+
+        // Cleanup
+        return () => {
+            cancelled = true
+            clearInterval(intervalId)
+        }
+
+    }, [props.post.id])
+
+
 
 
     const handleAddComment = async (event) => {

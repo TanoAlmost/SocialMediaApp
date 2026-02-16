@@ -36,7 +36,7 @@ function Posts(props) {
 
         const intervalId = setInterval(() => {
             refreshPosts()
-        }, 3000
+        }, 10000
         ) // cada 3s (ajusta si quieres)
 
         return () => clearInterval(intervalId)
